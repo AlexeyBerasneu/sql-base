@@ -5,7 +5,7 @@ The domain is a **financial market** — brokers, exchanges, client accounts, st
 
 ---
 
-![](/Users/MAC/Desktop/accounts.png)
+![diagram.jpg](images/diagram.jpg)
 
 
 ## 🏗️ Database Schema Overview
