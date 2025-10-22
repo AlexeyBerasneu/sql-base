@@ -5,6 +5,9 @@ The domain is a **financial market** — brokers, exchanges, client accounts, st
 
 ---
 
+![diagram.jpg](images/diagram.jpg)
+
+
 ## 🏗️ Database Schema Overview
 
 ### 1. `exchanges` — Stock Exchanges  
