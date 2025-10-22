@@ -1,14 +1,15 @@
 --1. List all accounts with their brokers and opening dates.
 -- 1 - Вывести список всех счетов с указанием брокера и даты открытия.
-select account_id, broker_name, opening_date
+select account_id, broker_name, opened_at
 from accounts as ac
          left join brokers as br on ac.broker_id = br.broker_id;
 
 --2. Show all stocks with their sectors and exchanges.
 -- 2 - Показать все акции с их биржей и категорией.
 select ticker, company_name, category, exchange_name
-from stocks as st
-         inner join exchanges as ex on st.exchange_id = ex.exchange_id;
+from stock_exchange as se
+        join exchanges as ex on se.exchange_id = ex.exchange_id
+        join stocks as st on se.stock_id = st.stock_id;
 
 --3. Find the top-3 most frequently traded stocks.
 -- 3 -Найти 3 самые популярные акции по количеству сделок.

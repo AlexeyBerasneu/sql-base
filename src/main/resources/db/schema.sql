@@ -37,7 +37,7 @@ create table accounts
     opened_at  DATE DEFAULT current_date
 );
 
-insert into accounts(broker_id, owner_name, opening_date)
+insert into accounts(broker_id, owner_name, opened_at)
 values (1, 'Alex', '2025-12-02'),
        (2, 'Bob', '2024-04-04'),
        (5, 'Alice', '2020-09-08'),
@@ -50,16 +50,33 @@ create table stocks
     stock_id     SERIAL PRIMARY KEY,
     ticker       varchar(50) not null,
     company_name varchar(50) not null,
-    category     varchar(50) not null,
-    exchange_id  int         not null references exchanges (exchange_id) ON DELETE cascade
+    category     varchar(50) not null
 );
 
-insert into stocks(ticker, company_name, category, exchange_id)
-VALUES ('AAPL', 'Apple Inc.', 'IT', 1),
-       ('MSFT', 'Microsoft Corp.', 'IT', 3),
-       ('JPM', 'JPMorgan Chase', 'Finance', 2),
-       ('TSLA', 'Tesla Inc.', 'Automotive', 2),
-       ('KO', 'Coca-Cola Co.', 'Consumer Goods', 4);
+insert into stocks(ticker, company_name, category)
+VALUES ('AAPL', 'Apple Inc.', 'IT'),
+       ('MSFT', 'Microsoft Corp.', 'IT'),
+       ('JPM', 'JPMorgan Chase', 'Finance'),
+       ('TSLA', 'Tesla Inc.', 'Automotive'),
+       ('KO', 'Coca-Cola Co.', 'Consumer Goods');
+
+
+drop table if exists stock_exchange cascade;
+create table stock_exchange
+(
+    stock_id    int not null references stocks (stock_id),
+    exchange_id int not null references exchanges (exchange_id),
+    PRIMARY KEY (stock_id, exchange_id)
+);
+
+insert into stock_exchange(stock_id, exchange_id)
+VALUES (3, 1),
+       (3, 2),
+       (5, 3),
+       (1, 5),
+       (4, 4),
+       (2, 3);
+
 
 
 drop table if exists trades cascade;
@@ -73,7 +90,8 @@ create table trades
     quantity    int check ( quantity > 0 ),
     price       DECIMAL(10, 2),
     comission   decimal(10, 2),
-    date        date default current_date
+    date        date default current_date,
+    FOREIGN KEY (stock_id, exchange_id) REFERENCES stock_exchange(stock_id, exchange_id) on DELETE cascade
 );
 
 insert into trades(account_id, stock_id, exchange_id, deal_name, quantity, price, comission, date)
